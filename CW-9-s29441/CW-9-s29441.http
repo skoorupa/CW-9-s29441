@@ -1,6 +1,42 @@
 @CW_9_s29441_HostAddress = http://localhost:5223
 
-GET {{CW_9_s29441_HostAddress}}/weatherforecast/
-Accept: application/json
+POST /Prescription HTTP/1.1
+Host: {{CW_9_s29441_HostAddress}}
+Content-Type: application/json
+Content-Length: 847
+
+{
+  "Patient": {
+    "IdPatient": 10,
+    "FirstName": "Karol",
+    "LastName": "Wojtyła",
+    "Birthdate": "2001-12-01"
+  },
+  "Doctor": {
+    "IdDoctor": 3,
+    "FirstName": "Tomasz",
+    "LastName": "Tomaszowski",
+    "Email": "tomasz@tomaszowski.edu.pl"
+  },
+  "Medicaments": [
+    {
+      "IdMedicament": 1,
+      "Name": "APAP",
+      "Description": "Paracetamol",
+      "Type": "przeciwbólowy",
+      "Dose": 5,
+      "Details": "Apap jest pyszny"
+    },
+    {
+      "IdMedicament": 3,
+      "Name": "Rutinoscorbin",
+      "Description": "Witamina C",
+      "Type": "odpornościowy",
+      "Details": "już na zawsze"
+    }
+  ],
+  "Date": "2025-05-28",
+  "DueDate": "2025-06-30"
+}
 
 ###
