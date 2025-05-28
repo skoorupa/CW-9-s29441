@@ -1,4 +1,5 @@
 using CW_9_s29441.Data;
+using CW_9_s29441.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(opt=>{
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+
+builder.Services.AddScoped<IDbService, DbService>();
 
 var app = builder.Build();
 
