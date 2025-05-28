@@ -40,3 +40,6 @@ Content-Length: 847
 }
 
 ###
+
+GET /Patient/1 HTTP/1.1
+Host: {{CW_9_s29441_HostAddress}}
