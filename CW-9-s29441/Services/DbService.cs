@@ -31,25 +31,33 @@ public class DbService(AppDbContext data) : IDbService
         
         var doctor = await data.Doctors.FirstOrDefaultAsync(d => d.IdDoctor == prescriptionData.Doctor.IdDoctor);
         if (doctor is null)
-            throw new NotFoundException($"Doctor not found");
+            throw new NotFoundException("Doctor not found");
         
         // koniec walidacji
+        
+        prescriptionData.Doctor.FirstName = doctor.FirstName;
+        prescriptionData.Doctor.LastName = doctor.LastName;
+        prescriptionData.Doctor.Email = doctor.Email;
         
         var patient = await data.Patients.FirstOrDefaultAsync(p => p.IdPatient == prescriptionData.Patient.IdPatient);
         if (patient is null)
         {
             var patientData = prescriptionData.Patient;
-            await data.Patients.AddAsync(new Patient()
+            var newPatient = await data.Patients.AddAsync(new Patient()
             {
                 FirstName = patientData.FirstName,
                 LastName = patientData.LastName,
                 Birthdate = patientData.Birthdate
             });
             await data.SaveChangesAsync(); 
-            patient = await data.Patients.FirstOrDefaultAsync(p => p.IdPatient == prescriptionData.Patient.IdPatient);
+            patient = await data.Patients.FirstOrDefaultAsync(p => p.IdPatient == newPatient.Entity.IdPatient);
             if (patient is null)
                 throw new Exception("Cannot add and find patient");
+            prescriptionData.Patient.IdPatient = newPatient.Entity.IdPatient;
         }
+        prescriptionData.Patient.FirstName = patient.FirstName;
+        prescriptionData.Patient.LastName = patient.LastName;
+        prescriptionData.Patient.Birthdate = patient.Birthdate;
 
         var prescription = await data.Prescriptions.AddAsync(new Prescription()
         {
